@@ -1,4 +1,4 @@
-# VaultUnlocked - Abstraction Library for Bukkit - [![Build Status](https://app.travis-ci.com/MilkBowl/Vault.svg?branch=master)](https://app.travis-ci.com/MilkBowl/Vault)
+# VaultUnlocked - Abstraction Library for Bukkit - [![Build Status](https://ci.codemc.io/job/creatorfromhell/job/VaultUnlocked/badge/icon)](https://ci.codemc.io/job/creatorfromhell/job/VaultUnlocked/)
 
 ## For Developers:
 Please see the [VaultUnlockedAPI](https://www.github.com/TheNewEconomy/VaultUnlockedAPI) page for
@@ -43,7 +43,7 @@ Let me know if you need any further modifications!
   - Determines if a player should receive the update notices
 
 ## License
-Copyright (C) 2011-2018 Morgan Humes <morgan@lanaddict.com>
+Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
 
 VaultUnlocked is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
