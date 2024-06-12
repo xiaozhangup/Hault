@@ -40,7 +40,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collection;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
 
@@ -182,6 +181,15 @@ public class Vault extends JavaPlugin {
             registeredEcons.append(econ.getProvider().getName());
         }
 
+        //VaultUnlocked Plugins
+        final StringBuilder registeredModernEcons = new StringBuilder();
+        final Collection<RegisteredServiceProvider<net.milkbowl.vault2.economy.Economy>> econs2 = this.getServer().getServicesManager().getRegistrations(net.milkbowl.vault2.economy.Economy.class);
+        for (RegisteredServiceProvider<net.milkbowl.vault2.economy.Economy> econ : econs2) {
+
+            if(registeredModernEcons.length() > 0) registeredModernEcons.append(", ");
+            registeredModernEcons.append(econ.getProvider().getName());
+        }
+
         // Get String of Registered Permission Services
         final StringBuilder registeredPerms = new StringBuilder();
         final Collection<RegisteredServiceProvider<Permission>> perms = this.getServer().getServicesManager().getRegistrations(Permission.class);
@@ -189,6 +197,15 @@ public class Vault extends JavaPlugin {
 
             if(registeredPerms.length() > 0) registeredPerms.append(", ");
             registeredPerms.append(perm.getProvider().getName());
+        }
+
+        //VaultUnlocked Plugins
+        final StringBuilder registeredModernPerms = new StringBuilder();
+        final Collection<RegisteredServiceProvider<net.milkbowl.vault2.permission.Permission>> perms2 = this.getServer().getServicesManager().getRegistrations(net.milkbowl.vault2.permission.Permission.class);
+        for (RegisteredServiceProvider<net.milkbowl.vault2.permission.Permission> perm : perms2) {
+
+            if(registeredModernPerms.length() > 0) registeredModernPerms.append(", ");
+            registeredModernPerms.append(perm.getProvider().getName());
         }
 
         final StringBuilder registeredChats = new StringBuilder();
@@ -199,11 +216,27 @@ public class Vault extends JavaPlugin {
             registeredChats.append(chat.getProvider().getName());
         }
 
+        //VaultUnlocked Plugins
+        final StringBuilder registeredModernChats = new StringBuilder();
+        final Collection<RegisteredServiceProvider<net.milkbowl.vault2.chat.Chat>> chats2 = this.getServer().getServicesManager().getRegistrations(net.milkbowl.vault2.chat.Chat.class);
+        for (RegisteredServiceProvider<net.milkbowl.vault2.chat.Chat> chat : chats2) {
+
+            if(registeredModernChats.length() > 0) registeredModernChats.append(", ");
+            registeredModernChats.append(chat.getProvider().getName());
+        }
+
         // Get Economy & Permission primary Services
         Economy econ = null;
         final RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp != null) {
             econ = rsp.getProvider();
+        }
+
+        //VaultUnlocked
+        net.milkbowl.vault2.economy.Economy econ2 = null;
+        final RegisteredServiceProvider<net.milkbowl.vault2.economy.Economy> rsp2 = getServer().getServicesManager().getRegistration(net.milkbowl.vault2.economy.Economy.class);
+        if (rsp2 != null) {
+            econ2 = rsp2.getProvider();
         }
 
         Permission perm = null;
@@ -212,17 +245,34 @@ public class Vault extends JavaPlugin {
             perm = rspp.getProvider();
         }
 
+        //VaultUnlocked
+        net.milkbowl.vault2.permission.Permission perm2 = null;
+        final RegisteredServiceProvider<net.milkbowl.vault2.permission.Permission> rspp2 = getServer().getServicesManager().getRegistration(net.milkbowl.vault2.permission.Permission.class);
+        if (rspp2 != null) {
+            perm2 = rspp2.getProvider();
+        }
+
         Chat chat = null;
         final RegisteredServiceProvider<Chat> rspc = getServer().getServicesManager().getRegistration(Chat.class);
         if (rspc != null) {
             chat = rspc.getProvider();
         }
 
+        //VaultUnlocked
+        net.milkbowl.vault2.chat.Chat chat2 = null;
+        final RegisteredServiceProvider<net.milkbowl.vault2.chat.Chat> rspc2 = getServer().getServicesManager().getRegistration(net.milkbowl.vault2.chat.Chat.class);
+        if (rspc2 != null) {
+            chat2 = rspc2.getProvider();
+        }
+
         // Send user some info!
         sender.sendMessage(String.format("[%s] Vault v%s Information", getDescription().getName(), getDescription().getVersion()));
-        sender.sendMessage(String.format("[%s] Economy: %s%s", getDescription().getName(), (econ == null)? "None" : econ.getName(), (registeredEcons.length() == 0)? "" : " [" + registeredEcons + "]"));
-        sender.sendMessage(String.format("[%s] Permission: %s%s", getDescription().getName(), (perm == null)? "None" : perm.getName(), (registeredPerms.length() == 0)? "" : " [" + registeredPerms + "]"));
-        sender.sendMessage(String.format("[%s] Chat: %s%s", getDescription().getName(), (chat == null)? "None" : chat.getName(), (registeredChats.length() == 0)? "" : " [" + registeredChats + "]"));
+        sender.sendMessage(String.format("[%s] Economy Legacy: %s%s", getDescription().getName(), (econ == null)? "None" : econ.getName(), (registeredEcons.length() == 0)? "" : " [" + registeredEcons + "]"));
+        sender.sendMessage(String.format("[%s] Economy Modern: %s%s", getDescription().getName(), (econ2 == null)? "None" : econ2.getName(), (registeredModernEcons.length() == 0)? "" : " [" + registeredModernEcons + "]"));
+        sender.sendMessage(String.format("[%s] Permission Legacy: %s%s", getDescription().getName(), (perm == null)? "None" : perm.getName(), (registeredPerms.length() == 0)? "" : " [" + registeredPerms + "]"));
+        sender.sendMessage(String.format("[%s] Permission Modern: %s%s", getDescription().getName(), (perm2 == null)? "None" : perm2.getName(), (registeredModernPerms.length() == 0)? "" : " [" + registeredModernPerms + "]"));
+        sender.sendMessage(String.format("[%s] Chat Legacy: %s%s", getDescription().getName(), (chat == null)? "None" : chat.getName(), (registeredChats.length() == 0)? "" : " [" + registeredChats + "]"));
+        sender.sendMessage(String.format("[%s] Chat Modern: %s%s", getDescription().getName(), (chat2 == null)? "None" : chat2.getName(), (registeredModernChats.length() == 0)? "" : " [" + registeredChats + "]"));
     }
 
     /**
