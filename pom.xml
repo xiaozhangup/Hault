@@ -84,6 +84,7 @@
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>VaultUnlockedAPI</artifactId>
 			<version>${api.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.bstats</groupId>
