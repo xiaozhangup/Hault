@@ -1,18 +1,19 @@
-name: ${project.name}
-version: ${project.version}-b${env.TRAVIS_BUILD_NUMBER}
-description: ${project.description}
-authors: [cereal, Sleaker, mung3r]
+name: VaultUnlocked
+version: 1.0.0
+description: A PR-friendly version of Vault; Where PRs are actually accepted.
+authors: [cereal, Sleaker, mung3r, creatorfromhell]
 website: ${project.url}
 api-version: 1.13
+folia-supported: true
 
-main: ${mainClass}
-load: startup
+main: net.milkbowl.vault.Vault
+load: STARTUP
 
 commands:
   vault-info:
-    description: Displays information about Vault 
+    description: Displays information about VaultUnlocked
     usage: |
-           /<command> - Displays Vault information
+           /<command> - Displays VaultUnlocked information
     permission: vault.admin
   vault-convert:
     description: Converts all data in economy1 and dumps it into economy2
@@ -21,5 +22,5 @@ commands:
     permission: vault.admin
 permissions:
   vault.admin:
-    description: Notifies the player when vault is in need of an update.
+    description: Notifies the player when VaultUnlocked is in need of an update.
     default: op
