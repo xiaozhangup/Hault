@@ -29,9 +29,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -43,21 +41,17 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collection;
 import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
 
 public class Vault extends JavaPlugin {
 
     private static final String VAULT_BUKKIT_URL = "https://dev.bukkit.org/projects/Vault";
-    private static Logger log;
-    private Permission perms;
+    private Logger log;
     private String newVersionTitle = "";
     private double newVersion = 0;
     private double currentVersion = 0;
     private String currentVersionTitle = "";
-    private ServicesManager sm;
-    private Vault plugin;
     private ScheduledExecutorService asyncTaskTimer;
 
     @Override
@@ -71,11 +65,9 @@ public class Vault extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        plugin = this;
         log = this.getLogger();
         currentVersionTitle = getDescription().getVersion().split("-")[0];
-        currentVersion = Double.valueOf(currentVersionTitle.replaceFirst("\\.", ""));
-        sm = getServer().getServicesManager();
+        currentVersion = Double.parseDouble(currentVersionTitle.replaceFirst("\\.", ""));
         // set defaults
         getConfig().addDefault("update-check", true);
         getConfig().options().copyDefaults(true);
@@ -228,9 +220,9 @@ public class Vault extends JavaPlugin {
 
         // Send user some info!
         sender.sendMessage(String.format("[%s] Vault v%s Information", getDescription().getName(), getDescription().getVersion()));
-        sender.sendMessage(String.format("[%s] Economy: %s%s", getDescription().getName(), econ == null ? "None" : econ.getName(), registeredEcons == null ? "" : " [" + registeredEcons + "]"));
-        sender.sendMessage(String.format("[%s] Permission: %s%s", getDescription().getName(), perm == null ? "None" : perm.getName(), registeredPerms == null ? "" : " [" + registeredPerms + "]"));
-        sender.sendMessage(String.format("[%s] Chat: %s%s", getDescription().getName(), chat == null ? "None" : chat.getName(), registeredChats == null ? "" : " [" + registeredChats + "]"));
+        sender.sendMessage(String.format("[%s] Economy: %s%s", getDescription().getName(), (econ == null)? "None" : econ.getName(), (registeredEcons.length() == 0)? "" : " [" + registeredEcons + "]"));
+        sender.sendMessage(String.format("[%s] Permission: %s%s", getDescription().getName(), (perm == null)? "None" : perm.getName(), (registeredPerms.length() == 0)? "" : " [" + registeredPerms + "]"));
+        sender.sendMessage(String.format("[%s] Chat: %s%s", getDescription().getName(), (chat == null)? "None" : chat.getName(), (registeredChats.length() == 0)? "" : " [" + registeredChats + "]"));
     }
 
     /**
@@ -247,7 +239,7 @@ public class Vault extends JavaPlugin {
                 Class.forName(pkg);
             }
             return true;
-        } catch (Exception e) {
+        } catch (Exception ignore) {
             return false;
         }
     }
@@ -263,14 +255,14 @@ public class Vault extends JavaPlugin {
             final String response = reader.readLine();
             final JSONArray array = (JSONArray) JSONValue.parse(response);
 
-            if (array.size() == 0) {
+            if (array.isEmpty()) {
                 this.getLogger().warning("No files found, or Feed URL is bad.");
                 return currentVersion;
             }
             // Pull the last version from the JSON
             newVersionTitle = ((String) ((JSONObject) array.get(array.size() - 1)).get("name")).replace("Vault", "").trim();
-            return Double.valueOf(newVersionTitle.replaceFirst("\\.", "").trim());
-        } catch (Exception e) {
+            return Double.parseDouble(newVersionTitle.replaceFirst("\\.", "").trim());
+        } catch (Exception ignore) {
             log.info("There was an issue attempting to check for the latest version.");
         }
         return currentVersion;
@@ -309,12 +301,7 @@ public class Vault extends JavaPlugin {
         }
 
         final String chatName = chat != null ? chat.getName() : "No Chat";
-        metrics.addCustomChart(new SimplePie("chat", new Callable<String>() {
-            @Override
-            public String call() {
-                return chatName;
-            }
-        }));
+        metrics.addCustomChart(new SimplePie("chat", ()->chatName));
     }
 
     public class VaultListener implements Listener {
@@ -322,8 +309,8 @@ public class Vault extends JavaPlugin {
         @EventHandler(priority = EventPriority.MONITOR)
         public void onPlayerJoin(PlayerJoinEvent event) {
 
-            Player player = event.getPlayer();
-            if (perms.has(player, "vault.update")) {
+            final Player player = event.getPlayer();
+            if(player.hasPermission("vault.update")) {
                 try {
                     if (newVersion > currentVersion) {
                         player.sendMessage("VaultUnlocked " +  newVersionTitle + " is out! You are running " + currentVersionTitle);
