@@ -6,46 +6,60 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<bukkitVersion>1.13.1-R0.1-SNAPSHOT</bukkitVersion>
 		<mainClass>${project.groupId}.${project.artifactId}</mainClass>
-		<api.version>1.7</api.version>
+		<api.version>2.0</api.version>
 	</properties>
 
 	<!-- Project information -->
 	<groupId>net.milkbowl.vault</groupId>
-	<artifactId>Vault</artifactId>
-	<version>${api.version}.3</version>
-	<name>Vault</name>
+	<artifactId>VaultUnlocked</artifactId>
+	<version>${api.version}.0</version>
+	<name>VaultUnlocked</name>
 	<url>https://dev.bukkit.org/projects/vault</url>
-	<description>Vault is a Chat, Permissions &amp; Economy API to allow plugins to more easily hook into these systems without needing to hook each individual system themselves.</description>
+	<description>VaultUnlocked is a Chat, Permissions &amp; Economy API to allow plugins to more easily hook into these systems without needing to hook each individual system themselves.</description>
 
 
 
 	<!-- Organization -->
+
 	<organization>
-		<name>MilkBowl</name>
-		<url>https://github.com/MilkBowl/Vault</url>
+		<name>The New Economy</name>
+		<url>https://tnemc.net</url>
 	</organization>
 
+	<developers>
+		<developer>
+			<id>creatorfromhell</id>
+			<name>Daniel "creatorfromhell" Vidmar</name>
+			<email>daniel.viddy@gmail.com</email>
+			<url>https://cfh.dev</url>
+			<organization>The New Economy</organization>
+			<organizationUrl>https://tnemc.net</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>America/New_York</timezone>
+		</developer>
+	</developers>
+
 	<scm>
-		<url>https://github.com/MilkBowl/Vault</url>
-		<connection>scm:git:git://github.com:MilkBowl/Vault.git</connection>
-		<developerConnection>scm:git:git@github.com:MilkBowl/Vault.git</developerConnection>
+		<url>https://github.com/TheNewEconomy/VaultUnlockedAPI</url>
+		<connection>scm:git:git://github.com/TheNewEconomy/VaultUnlockedAPI.git</connection>
+		<developerConnection>scm:git:git@github.com:MilkBowl/VaultAPI.git</developerConnection>
 	</scm>
 
 	<issueManagement>
 		<system>GitHub</system>
-		<url>https://github.com/MilkBowl/Vault/issues</url>
+		<url>https://github.com/TheNewEconomy/VaultUnlockedAPI/issues</url>
 	</issueManagement>
 
 	<distributionManagement>
 		<repository>
-			<id>pub-repo</id>
-			<name>Public Releases</name>
-			<url>http://nexus.hc.to/content/repositories/pub_releases/</url>
+			<id>codemc-releases</id>
+			<url>https://repo.codemc.io/repository/maven-releases/</url>
 		</repository>
 		<snapshotRepository>
-			<id>pub-repo</id>
-			<name>Public Snapshots</name>
-			<url>http://nexus.hc.to/content/repositories/pub_snapshots/</url>
+			<id>codemc-snapshots</id>
+			<url>https://repo.codemc.io/repository/maven-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
