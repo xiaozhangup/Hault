@@ -277,21 +277,17 @@ public class Vault extends JavaPlugin {
         }
 
         final String econName = econ != null ? econ.getName() : "No Economy";
-        metrics.addCustomChart(new SimplePie("economy", new Callable<String>() {
-            @Override
-            public String call() {
-                return econName;
-            }
-        }));
+        metrics.addCustomChart(new SimplePie("economy", ()->econName));
 
         // Create our Permission Graph and Add our permission Plotters
-        final String permName = Bukkit.getServer().getServicesManager().getRegistration(Permission.class).getProvider().getName();
-        metrics.addCustomChart(new SimplePie("permission", new Callable<String>() {
-            @Override
-            public String call() {
-                return permName;
-            }
-        }));
+
+        final RegisteredServiceProvider<Permission> rspPerm = Bukkit.getServer().getServicesManager().getRegistration(Permission.class);
+        Permission perm = null;
+        if (rspPerm != null) {
+            perm = rspPerm.getProvider();
+        }
+        final String permName = perm != null ? perm.getName() : "No Economy";
+        metrics.addCustomChart(new SimplePie("permission", ()->permName));
 
         // Create our Chat Graph and Add our chat Plotters
         final RegisteredServiceProvider<Chat> rspChat = Bukkit.getServer().getServicesManager().getRegistration(Chat.class);
