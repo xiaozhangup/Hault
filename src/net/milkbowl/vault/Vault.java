@@ -116,35 +116,46 @@ public class Vault extends JavaPlugin {
     }
 
     private void convertCommand(CommandSender sender, String[] args) {
-        Collection<RegisteredServiceProvider<Economy>> econs = this.getServer().getServicesManager().getRegistrations(Economy.class);
+        final Collection<RegisteredServiceProvider<Economy>> econs = this.getServer().getServicesManager().getRegistrations(Economy.class);
+
         if (econs == null || econs.size() < 2) {
+
             sender.sendMessage("You must have at least 2 economies loaded to convert.");
             return;
+
         } else if (args.length != 2) {
             sender.sendMessage("You must specify only the economy to convert from and the economy to convert to. (names should not contain spaces)");
             return;
         }
         Economy econ1 = null;
         Economy econ2 = null;
-        String economies = "";
+
+        final StringBuilder economies = new StringBuilder();
         for (RegisteredServiceProvider<Economy> econ : econs) {
-            String econName = econ.getProvider().getName().replace(" ", "");
+
+            final String econName = econ.getProvider().getName().replace(" ", "");
             if (econName.equalsIgnoreCase(args[0])) {
+
                 econ1 = econ.getProvider();
             } else if (econName.equalsIgnoreCase(args[1])) {
+
                 econ2 = econ.getProvider();
             }
+
             if (economies.length() > 0) {
-            	economies += ", ";
+
+            	economies.append(", ");
             }
-            economies += econName;
+            economies.append(econName);
         }
 
         if (econ1 == null) {
+
             sender.sendMessage("Could not find " + args[0] + " loaded on the server, check your spelling.");
             sender.sendMessage("Valid economies are: " + economies);
             return;
         } else if (econ2 == null) {
+
             sender.sendMessage("Could not find " + args[1] + " loaded on the server, check your spelling.");
             sender.sendMessage("Valid economies are: " + economies);
             return;
@@ -171,56 +182,50 @@ public class Vault extends JavaPlugin {
 
     private void infoCommand(CommandSender sender) {
         // Get String of Registered Economy Services
-        String registeredEcons = null;
-        Collection<RegisteredServiceProvider<Economy>> econs = this.getServer().getServicesManager().getRegistrations(Economy.class);
+        final StringBuilder registeredEcons = new StringBuilder();
+        final Collection<RegisteredServiceProvider<Economy>> econs = this.getServer().getServicesManager().getRegistrations(Economy.class);
         for (RegisteredServiceProvider<Economy> econ : econs) {
-            Economy e = econ.getProvider();
-            if (registeredEcons == null) {
-                registeredEcons = e.getName();
-            } else {
-                registeredEcons += ", " + e.getName();
-            }
+
+            if(registeredEcons.length() > 0) registeredEcons.append(", ");
+            registeredEcons.append(econ.getProvider().getName());
         }
 
         // Get String of Registered Permission Services
-        String registeredPerms = null;
-        Collection<RegisteredServiceProvider<Permission>> perms = this.getServer().getServicesManager().getRegistrations(Permission.class);
+        final StringBuilder registeredPerms = new StringBuilder();
+        final Collection<RegisteredServiceProvider<Permission>> perms = this.getServer().getServicesManager().getRegistrations(Permission.class);
         for (RegisteredServiceProvider<Permission> perm : perms) {
-            Permission p = perm.getProvider();
-            if (registeredPerms == null) {
-                registeredPerms = p.getName();
-            } else {
-                registeredPerms += ", " + p.getName();
-            }
+
+            if(registeredPerms.length() > 0) registeredPerms.append(", ");
+            registeredPerms.append(perm.getProvider().getName());
         }
 
-        String registeredChats = null;
-        Collection<RegisteredServiceProvider<Chat>> chats = this.getServer().getServicesManager().getRegistrations(Chat.class);
+        final StringBuilder registeredChats = new StringBuilder();
+        final Collection<RegisteredServiceProvider<Chat>> chats = this.getServer().getServicesManager().getRegistrations(Chat.class);
         for (RegisteredServiceProvider<Chat> chat : chats) {
-            Chat c = chat.getProvider();
-            if (registeredChats == null) {
-                registeredChats = c.getName();
-            } else {
-                registeredChats += ", " + c.getName();
-            }
+
+            if(registeredChats.length() > 0) registeredChats.append(", ");
+            registeredChats.append(chat.getProvider().getName());
         }
 
         // Get Economy & Permission primary Services
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         Economy econ = null;
+        final RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp != null) {
             econ = rsp.getProvider();
         }
+
         Permission perm = null;
-        RegisteredServiceProvider<Permission> rspp = getServer().getServicesManager().getRegistration(Permission.class);
+        final RegisteredServiceProvider<Permission> rspp = getServer().getServicesManager().getRegistration(Permission.class);
         if (rspp != null) {
             perm = rspp.getProvider();
         }
+
         Chat chat = null;
-        RegisteredServiceProvider<Chat> rspc = getServer().getServicesManager().getRegistration(Chat.class);
+        final RegisteredServiceProvider<Chat> rspc = getServer().getServicesManager().getRegistration(Chat.class);
         if (rspc != null) {
             chat = rspc.getProvider();
         }
+
         // Send user some info!
         sender.sendMessage(String.format("[%s] Vault v%s Information", getDescription().getName(), getDescription().getVersion()));
         sender.sendMessage(String.format("[%s] Economy: %s%s", getDescription().getName(), econ == null ? "None" : econ.getName(), registeredEcons == null ? "" : " [" + registeredEcons + "]"));
@@ -273,11 +278,12 @@ public class Vault extends JavaPlugin {
 
     private void findCustomData(Metrics metrics) {
         // Create our Economy Graph and Add our Economy plotters
-        RegisteredServiceProvider<Economy> rspEcon = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+        final RegisteredServiceProvider<Economy> rspEcon = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
         Economy econ = null;
         if (rspEcon != null) {
             econ = rspEcon.getProvider();
         }
+
         final String econName = econ != null ? econ.getName() : "No Economy";
         metrics.addCustomChart(new SimplePie("economy", new Callable<String>() {
             @Override
@@ -296,11 +302,12 @@ public class Vault extends JavaPlugin {
         }));
 
         // Create our Chat Graph and Add our chat Plotters
-        RegisteredServiceProvider<Chat> rspChat = Bukkit.getServer().getServicesManager().getRegistration(Chat.class);
+        final RegisteredServiceProvider<Chat> rspChat = Bukkit.getServer().getServicesManager().getRegistration(Chat.class);
         Chat chat = null;
         if (rspChat != null) {
             chat = rspChat.getProvider();
         }
+
         final String chatName = chat != null ? chat.getName() : "No Chat";
         metrics.addCustomChart(new SimplePie("chat", new Callable<String>() {
             @Override
@@ -314,6 +321,7 @@ public class Vault extends JavaPlugin {
 
         @EventHandler(priority = EventPriority.MONITOR)
         public void onPlayerJoin(PlayerJoinEvent event) {
+
             Player player = event.getPlayer();
             if (perms.has(player, "vault.update")) {
                 try {
@@ -321,9 +329,7 @@ public class Vault extends JavaPlugin {
                         player.sendMessage("VaultUnlocked " +  newVersionTitle + " is out! You are running " + currentVersionTitle);
                         player.sendMessage("Update VaultUnlocked at: " + VAULT_BUKKIT_URL);
                     }
-                } catch (Exception e) {
-                    // Ignore exceptions
-                }
+                } catch (Exception ignore) {}
             }
         }
 
