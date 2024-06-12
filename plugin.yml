@@ -2,7 +2,7 @@ name: VaultUnlocked
 version: 1.0.0
 description: A PR-friendly version of Vault; Where PRs are actually accepted.
 authors: [cereal, Sleaker, mung3r, creatorfromhell]
-website: ${project.url}
+website: https://tnemc.net
 api-version: 1.13
 folia-supported: true
 
