@@ -6,7 +6,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<bukkitVersion>1.13.1-R0.1-SNAPSHOT</bukkitVersion>
 		<mainClass>${project.groupId}.${project.artifactId}</mainClass>
-		<api.version>2.5</api.version>
+		<api.version>2.6</api.version>
 	</properties>
 
 	<!-- Project information -->
@@ -87,6 +87,12 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+			<groupId>net.kyori</groupId>
+			<artifactId>adventure-text-minimessage</artifactId>
+			<version>4.17.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.bstats</groupId>
 			<artifactId>bstats-bukkit</artifactId>
 			<version>3.0.0</version>
@@ -113,6 +119,9 @@
 				<configuration>
 					<source>8</source>
 					<target>8</target>
+					<compilerArgs>
+						<arg>-parameters</arg>
+					</compilerArgs>
 				</configuration>
 			</plugin>
 			<plugin>
