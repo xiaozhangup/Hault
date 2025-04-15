@@ -40,7 +40,13 @@ Let me know if you need any further modifications!
 
 ## Permissions
 * vault.admin
-  - Determines if a player should receive the update notices
+  - Determines if a player should have access to the administrative tools.
+* vault.admin.info
+  - Determines if a player should have access to the "/vault-info" command.
+* vault.admin.convert
+  - Determines if a player should have access to the "/vault-convert" command.
+* vault.update
+  - Determines if a player should receive the update notices.
 
 ## License
 Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
