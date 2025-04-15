@@ -87,17 +87,25 @@ public class Vault extends JavaPlugin {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-        if (!sender.hasPermission("vault.admin")) {
-            sender.sendMessage("You do not have permission to use that command!");
-            return true;
-        }
 
         if (command.getName().equalsIgnoreCase("vault-info")) {
+          if (!sender.hasPermission("vault.admin.info")) {
+              sender.sendMessage("You do not have permission to use that command!");
+              return true;
+          }
+          else {
             infoCommand(sender);
             return true;
+          }
         } else if (command.getName().equalsIgnoreCase("vault-convert")) {
+          if (!sender.hasPermission("vault.admin.convert")) {
+              sender.sendMessage("You do not have permission to use that command!");
+              return true;
+          }
+          else {
             convertCommand(sender, args);
             return true;
+          }
         } else {
             // Show help
             sender.sendMessage("VaultUnlocked Commands:");
