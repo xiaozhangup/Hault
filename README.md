@@ -48,6 +48,9 @@ Let me know if you need any further modifications!
 * vault.update
   - Determines if a player should receive the update notices.
 
+## Support
+- Issues: https://github.com/TheNewEconomy/VaultUnlocked/issues
+
 ## License
 Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
 
