@@ -5,3 +5,7 @@
   - vault.admin and vault.update
 - Javadocs are here! https://theneweconomy.github.io/VaultUnlockedAPI/javadoc/
 - 1.21.5 support
+
+
+## 2.12.0
+- 1.21.6 support
