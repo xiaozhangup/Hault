@@ -9,3 +9,6 @@
 
 ## 2.12.0
 - 1.21.6 support
+
+## 2.13
+- Added support for 1.21.7
