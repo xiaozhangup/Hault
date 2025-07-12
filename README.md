@@ -48,6 +48,76 @@ Let me know if you need any further modifications!
 * vault.update
   - Determines if a player should receive the update notices.
 
+## 📘 VaultUnlocked PlaceholderAPI Placeholders (UUID-Based)
+
+Note: These only work if your economy plugin supports the modern API of VaultUnlocked.
+
+### 💰 Personal Balance (Player Required)
+
+| Placeholder                                                                 | Description                                                             |
+|-----------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| `%vaultunlocked_balance%`                                                  | Player’s balance in the default world                                  |
+| `%vaultunlocked_balance_<world>%`                                          | Player’s balance in a specific world                                   |
+| `%vaultunlocked_balance_currency_<currency>%`                              | Balance in a specific currency (default world)                         |
+| `%vaultunlocked_balance_currency_<currency>_world_<world>%`                | Balance in a specific currency and world                               |
+| `%vaultunlocked_balanceformatted%`                                         | Formatted balance (e.g., `$1,234.56`)                                  |
+| `%vaultunlocked_balanceformatted_currency_<currency>%`                     | Formatted balance in a specific currency                               |
+| `%vaultunlocked_balanceformatted_currency_<currency>_world_<world>%`       | Formatted balance in a specific currency and world                     |
+
+### 🏦 Shared Account Balance (Account UUID Required)
+
+| Placeholder                                                                                         | Description                                                             |
+|-----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| `%vaultunlocked_account_<uuid>%`                                                                    | Shared account balance (default currency/world)                        |
+| `%vaultunlocked_account_<uuid>_status%`                                                             | Whether the player has access to the shared account                    |
+| `%vaultunlocked_account_<uuid>_currency_<currency>%`                                                | Shared account balance in a specific currency                          |
+| `%vaultunlocked_account_<uuid>_currency_<currency>_world_<world>%`                                  | Shared account balance in a specific currency and world                |
+| `%vaultunlocked_account_<uuid>_currency_<currency>_formatted%`                                      | Formatted balance in a specific currency                               |
+| `%vaultunlocked_account_<uuid>_currency_<currency>_world_<world>_formatted%`                        | Formatted balance in a specific currency and world                     |
+
+
+### ✅ Capability Checks (Player & Account UUID Required)
+
+Please note: The response is yes or no, for true or false respectively.
+
+| Placeholder                              | Description                                                    |
+|------------------------------------------|----------------------------------------------------------------|
+| `%vaultunlocked_can_deposit_<uuid>%`     | Whether the player can deposit into the account with UUID.     |
+| `%vaultunlocked_can_withdraw_<uuid>%`    | Whether the player can withdraw from the account with UUID.    |
+| `%vaultunlocked_can_balance_<uuid>%`     | Whether the player can view the balance of the account.        |
+| `%vaultunlocked_can_transfer_<uuid>%`    | Whether the player can transfer ownership of the account.      |
+| `%vaultunlocked_can_invite_<uuid>%`      | Whether the player can invite members to the account.          |
+| `%vaultunlocked_can_remove_<uuid>%`      | Whether the player can remove members from the account.        |
+| `%vaultunlocked_can_modify_<uuid>%`      | Whether the player can modify member permissions.              |
+| `%vaultunlocked_can_delete_<uuid>%`      | Whether the player can delete the account.                     |
+
+### 📂 Account List / Info (Player Required)
+
+| Placeholder                         | Description                                             |
+|-------------------------------------|---------------------------------------------------------|
+| `%vaultunlocked_accounts%`         | List of accessible shared account UUIDs                |
+| `%vaultunlocked_accounts_count%`   | Count of accessible shared accounts                    |
+
+### 💱 Currency Metadata (No Player Required)
+
+| Placeholder                           | Description                             |
+|---------------------------------------|-----------------------------------------|
+| `%vaultunlocked_currency%`            | Singular form of the default currency   |
+| `%vaultunlocked_currencyplural%`      | Plural form of the default currency     |
+
+### 🔡 Encoding Notes for Currency Names
+
+If a currency contains spaces or symbols, encode them:
+
+| Character | Use `%` Encoding |
+|-----------|------------------|
+| Space     | `%20`            |
+| `$`       | `%24`            |
+| `+`       | `%2B`            |
+| `&`       | `%26`            |
+| `/`       | `%2F`            |
+| `=`       | `%3D`            |
+
 ## Support
 - Issues: https://github.com/TheNewEconomy/VaultUnlocked/issues
 

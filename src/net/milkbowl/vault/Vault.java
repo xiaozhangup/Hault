@@ -17,6 +17,7 @@ package net.milkbowl.vault;
 
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.papi.EconomyPlaceholders;
 import net.milkbowl.vault.permission.Permission;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
@@ -41,6 +42,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
 
@@ -53,6 +55,7 @@ public class Vault extends JavaPlugin {
     private double currentVersion = 0;
     private String currentVersionTitle = "";
     private ScheduledExecutorService asyncTaskTimer;
+    private static Vault instance;
 
     @Override
     public void onDisable() {
@@ -65,6 +68,7 @@ public class Vault extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        instance = this;
         log = this.getLogger();
         currentVersionTitle = getDescription().getVersion().split("-")[0];
         currentVersion = Double.parseDouble(currentVersionTitle.replaceFirst("\\.", ""));
@@ -79,14 +83,21 @@ public class Vault extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new VaultListener(), this);
 
         // Load up the Plugin metrics
-        Metrics metrics = new Metrics(this, 22252);
+        final Metrics metrics = new Metrics(this, 22252);
         findCustomData(metrics);
+
+        if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+
+            new EconomyPlaceholders().register();
+        } else {
+            Bukkit.getPluginManager().registerEvents(new PluginEnableListener(), this);
+        }
 
         log.info(String.format("Enabled Version %s", getDescription().getVersion()));
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
+    public boolean onCommand(final CommandSender sender, final Command command, final String commandLabel, final String[] args) {
 
         if (command.getName().equalsIgnoreCase("vault-info")) {
           if (!sender.hasPermission("vault.admin.info")) {
@@ -115,7 +126,7 @@ public class Vault extends JavaPlugin {
         }
     }
 
-    private void convertCommand(CommandSender sender, String[] args) {
+    private void convertCommand(final CommandSender sender, final String[] args) {
         final Collection<RegisteredServiceProvider<Economy>> econs = this.getServer().getServicesManager().getRegistrations(Economy.class);
         final Collection<RegisteredServiceProvider<net.milkbowl.vault2.economy.Economy>> econs2 = this.getServer().getServicesManager().getRegistrations(net.milkbowl.vault2.economy.Economy.class);
 
@@ -135,7 +146,7 @@ public class Vault extends JavaPlugin {
         net.milkbowl.vault2.economy.Economy econ2Unlocked = null;
 
         final StringBuilder economies = new StringBuilder();
-        for (RegisteredServiceProvider<Economy> econ : econs) {
+        for (final RegisteredServiceProvider<Economy> econ : econs) {
 
             final String econName = econ.getProvider().getName().replace(" ", "");
             if (econName.equalsIgnoreCase(args[0])) {
@@ -153,7 +164,7 @@ public class Vault extends JavaPlugin {
             economies.append(econName);
         }
 
-        for (RegisteredServiceProvider<net.milkbowl.vault2.economy.Economy> econ : econs2) {
+        for (final RegisteredServiceProvider<net.milkbowl.vault2.economy.Economy> econ : econs2) {
 
             final String econName = econ.getProvider().getName().replace(" ", "");
             if (econName.equalsIgnoreCase(args[0])) {
@@ -188,7 +199,7 @@ public class Vault extends JavaPlugin {
         final boolean useUnlocked2 = (econ2Unlocked != null);
         final String pluginID = "vault conversion";
 
-        for (OfflinePlayer op : Bukkit.getServer().getOfflinePlayers()) {
+        for (final OfflinePlayer op : Bukkit.getServer().getOfflinePlayers()) {
 
             if(useUnlocked1) {
                 if(useUnlocked2) {
@@ -243,11 +254,11 @@ public class Vault extends JavaPlugin {
         sender.sendMessage("Conversion complete, please verify the data before using it.");
     }
 
-    private void infoCommand(CommandSender sender) {
+    private void infoCommand(final CommandSender sender) {
         // Get String of Registered Economy Services
         final StringBuilder registeredEcons = new StringBuilder();
         final Collection<RegisteredServiceProvider<Economy>> econs = this.getServer().getServicesManager().getRegistrations(Economy.class);
-        for (RegisteredServiceProvider<Economy> econ : econs) {
+        for (final RegisteredServiceProvider<Economy> econ : econs) {
 
             if(registeredEcons.length() > 0) registeredEcons.append(", ");
             registeredEcons.append(econ.getProvider().getName());
@@ -256,7 +267,7 @@ public class Vault extends JavaPlugin {
         //VaultUnlocked Plugins
         final StringBuilder registeredModernEcons = new StringBuilder();
         final Collection<RegisteredServiceProvider<net.milkbowl.vault2.economy.Economy>> econs2 = this.getServer().getServicesManager().getRegistrations(net.milkbowl.vault2.economy.Economy.class);
-        for (RegisteredServiceProvider<net.milkbowl.vault2.economy.Economy> econ : econs2) {
+        for (final RegisteredServiceProvider<net.milkbowl.vault2.economy.Economy> econ : econs2) {
 
             if(registeredModernEcons.length() > 0) registeredModernEcons.append(", ");
             registeredModernEcons.append(econ.getProvider().getName());
@@ -265,7 +276,7 @@ public class Vault extends JavaPlugin {
         // Get String of Registered Permission Services
         final StringBuilder registeredPerms = new StringBuilder();
         final Collection<RegisteredServiceProvider<Permission>> perms = this.getServer().getServicesManager().getRegistrations(Permission.class);
-        for (RegisteredServiceProvider<Permission> perm : perms) {
+        for (final RegisteredServiceProvider<Permission> perm : perms) {
 
             if(registeredPerms.length() > 0) registeredPerms.append(", ");
             registeredPerms.append(perm.getProvider().getName());
@@ -274,7 +285,7 @@ public class Vault extends JavaPlugin {
         //VaultUnlocked Plugins
         final StringBuilder registeredModernPerms = new StringBuilder();
         final Collection<RegisteredServiceProvider<net.milkbowl.vault2.permission.Permission>> perms2 = this.getServer().getServicesManager().getRegistrations(net.milkbowl.vault2.permission.Permission.class);
-        for (RegisteredServiceProvider<net.milkbowl.vault2.permission.Permission> perm : perms2) {
+        for (final RegisteredServiceProvider<net.milkbowl.vault2.permission.Permission> perm : perms2) {
 
             if(registeredModernPerms.length() > 0) registeredModernPerms.append(", ");
             registeredModernPerms.append(perm.getProvider().getName());
@@ -282,7 +293,7 @@ public class Vault extends JavaPlugin {
 
         final StringBuilder registeredChats = new StringBuilder();
         final Collection<RegisteredServiceProvider<Chat>> chats = this.getServer().getServicesManager().getRegistrations(Chat.class);
-        for (RegisteredServiceProvider<Chat> chat : chats) {
+        for (final RegisteredServiceProvider<Chat> chat : chats) {
 
             if(registeredChats.length() > 0) registeredChats.append(", ");
             registeredChats.append(chat.getProvider().getName());
@@ -291,7 +302,7 @@ public class Vault extends JavaPlugin {
         //VaultUnlocked Plugins
         final StringBuilder registeredModernChats = new StringBuilder();
         final Collection<RegisteredServiceProvider<net.milkbowl.vault2.chat.Chat>> chats2 = this.getServer().getServicesManager().getRegistrations(net.milkbowl.vault2.chat.Chat.class);
-        for (RegisteredServiceProvider<net.milkbowl.vault2.chat.Chat> chat : chats2) {
+        for (final RegisteredServiceProvider<net.milkbowl.vault2.chat.Chat> chat : chats2) {
 
             if(registeredModernChats.length() > 0) registeredModernChats.append(", ");
             registeredModernChats.append(chat.getProvider().getName());
@@ -347,6 +358,13 @@ public class Vault extends JavaPlugin {
         sender.sendMessage(String.format("[%s] Chat Modern: %s%s", getDescription().getName(), (chat2 == null)? "None" : chat2.getName(), (registeredModernChats.length() == 0)? "" : " [" + registeredChats + "]"));
     }
 
+    public Optional<net.milkbowl.vault2.economy.Economy> modernProvider() {
+
+        final RegisteredServiceProvider<net.milkbowl.vault2.economy.Economy> econ = getServer().getServicesManager().getRegistration(net.milkbowl.vault2.economy.Economy.class);
+
+        return Optional.ofNullable(econ.getProvider());
+    }
+
     /**
      * Determines if all packages in a String array are within the Classpath
      * This is the best way to determine if a specific plugin exists and will be
@@ -355,21 +373,21 @@ public class Vault extends JavaPlugin {
      * @param packages String Array of package names to check
      * @return Success or Failure
      */
-    private static boolean packagesExists(String...packages) {
+    private static boolean packagesExists(final String...packages) {
         try {
-            for (String pkg : packages) {
+            for (final String pkg : packages) {
                 Class.forName(pkg);
             }
             return true;
-        } catch (Exception ignore) {
+        } catch (final Exception ignore) {
             return false;
         }
     }
 
-    public double updateCheck(double currentVersion) {
+    public double updateCheck(final double currentVersion) {
         try {
-            URL url = new URL("https://api.curseforge.com/servermods/files?projectids=33184");
-            URLConnection conn = url.openConnection();
+            final URL url = new URL("https://api.curseforge.com/servermods/files?projectids=33184");
+            final URLConnection conn = url.openConnection();
             conn.setReadTimeout(5000);
             conn.addRequestProperty("User-Agent", "VaultUnlocked Update Checker");
             conn.setDoOutput(true);
@@ -384,13 +402,13 @@ public class Vault extends JavaPlugin {
             // Pull the last version from the JSON
             newVersionTitle = ((String) ((JSONObject) array.get(array.size() - 1)).get("name")).replace("Vault", "").trim();
             return Double.parseDouble(newVersionTitle.replaceFirst("\\.", "").trim());
-        } catch (Exception ignore) {
+        } catch (final Exception ignore) {
             log.info("There was an issue attempting to check for the latest version.");
         }
         return currentVersion;
     }
 
-    private void findCustomData(Metrics metrics) {
+    private void findCustomData(final Metrics metrics) {
         // Create our Economy Graph and Add our Economy plotters
         final RegisteredServiceProvider<Economy> rspEcon = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
         Economy econ = null;
@@ -425,7 +443,7 @@ public class Vault extends JavaPlugin {
     public class VaultListener implements Listener {
 
         @EventHandler(priority = EventPriority.MONITOR)
-        public void onPlayerJoin(PlayerJoinEvent event) {
+        public void onPlayerJoin(final PlayerJoinEvent event) {
 
             final Player player = event.getPlayer();
             if(player.hasPermission("vault.update")) {
@@ -434,9 +452,13 @@ public class Vault extends JavaPlugin {
                         player.sendMessage("VaultUnlocked " +  newVersionTitle + " is out! You are running " + currentVersionTitle);
                         player.sendMessage("Update VaultUnlocked at: " + VAULT_BUKKIT_URL);
                     }
-                } catch (Exception ignore) {}
+                } catch (final Exception ignore) {}
             }
         }
 
+    }
+
+    public static Vault instance() {
+        return instance;
     }
 }
