@@ -45,11 +45,6 @@ public class Vault extends JavaPlugin {
     public void onEnable() {
         instance = this;
         log = this.getLogger();
-        // set defaults
-        getConfig().addDefault("update-check", true);
-        getConfig().options().copyDefaults(true);
-        saveConfig();
-        // Load Vault Addons
 
         getCommand("vault-info").setExecutor(this);
         getCommand("vault-convert").setExecutor(this);
