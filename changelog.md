@@ -122,3 +122,6 @@ If a currency contains spaces or symbols, encode them:
 | `&`       | `%26`            |
 | `/`       | `%2F`            |
 | `=`       | `%3D`            |
+
+## 2.15.1
+- Fixed issue where the softdepend for PlaceholderAPI was missing causing a console message.

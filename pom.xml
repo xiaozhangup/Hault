@@ -12,7 +12,7 @@
 	<!-- Project information -->
 	<groupId>net.milkbowl.vault</groupId>
 	<artifactId>VaultUnlocked</artifactId>
-	<version>${api.version}.0</version>
+	<version>${api.version}.1</version>
 	<name>VaultUnlocked</name>
 	<url>https://dev.bukkit.org/projects/vault</url>
 	<description>VaultUnlocked is a Chat, Permissions &amp; Economy API to allow plugins to more easily hook into these systems without needing to hook each individual system themselves.</description>
