@@ -1,27 +1,24 @@
-name: Vault
+name: Hault
 version: 2.15.1
-description: A PR-friendly version of Vault; Where PRs are actually accepted.
-authors: [cereal, Sleaker, mung3r, creatorfromhell]
-website: https://tnemc.net
-api-version: 1.13
-folia-supported: true
+description: HAPPYLAND Build Vault
+authors: [ cereal, Sleaker, mung3r, creatorfromhell ]
 
 main: net.milkbowl.vault.Vault
 load: STARTUP
-
-softdepend:
-  - PlaceholderAPI
+api-version: 1.21
+provides: [ Vault ]
+folia-supported: true
 
 commands:
   vault-info:
     description: Displays information about VaultUnlocked
     usage: |
-           /<command> - Displays VaultUnlocked information
+      /<command> - Displays VaultUnlocked information
     permission: vault.admin.info
   vault-convert:
     description: Converts all data in economy1 and dumps it into economy2
     usage: |
-           /<command> [economy1] [economy2]
+      /<command> [economy1] [economy2]
     permission: vault.admin.convert
 permissions:
   vault.admin:
